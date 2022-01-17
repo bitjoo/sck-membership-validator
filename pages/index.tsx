@@ -2,7 +2,6 @@ import path from "path";
 import fs from "fs";
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import React, { useCallback, useEffect, useState } from "react";
 import cx from "classnames";
@@ -50,7 +49,7 @@ const Home: NextPage<Props> = ({ membershipIds }) => {
 
       <main className={styles.main}>
         <span className={styles.logo}>
-          <Image src="/SCK_blau.png" alt="SCK Logo" width={150} height={150} />
+          <img src="/SCK_blau.png" alt="SCK Logo" width={150} height={150} />
         </span>
 
         <h1 className={styles.title}>Membership Validator</h1>
@@ -74,14 +73,14 @@ const Home: NextPage<Props> = ({ membershipIds }) => {
           })}
         >
           {isValidMembership ? (
-            <Image
+            <img
               src="/check_circle.svg"
               alt="Found"
               width={100}
               height={100}
             />
           ) : (
-            <Image
+            <img
               src="/cancel_circle.svg"
               alt="Found"
               width={100}
@@ -101,7 +100,13 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     "membership_ids.json"
   );
   const fileContent = fs.readFileSync(postsDirectory, "utf-8");
-  const membershipIds = JSON.parse(fileContent);
+  let membershipIds; 
+
+  try {
+    membershipIds = JSON.parse(fileContent);
+  } catch {
+    console.error("Can't parse the membership ids.")
+  }
 
   return {
     props: {

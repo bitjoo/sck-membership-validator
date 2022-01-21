@@ -7,7 +7,8 @@
     "start": "next start",
     "lint": "next lint",
     "ftp-deploy": "node ./scripts/deploy.js",
-    "deploy": "next build && next export && yarn ftp-deploy"
+    "convert": "node ./scripts/convert-member-ids.js",
+    "deploy": "yarn convert && next build && next export && yarn ftp-deploy"
   },
   "dependencies": {
     "next": "12.0.3",
@@ -22,6 +23,7 @@
     "eslint": "7",
     "eslint-config-next": "12.0.3",
     "ftp-deploy": "^2.4.1",
+    "simple-excel-to-json": "^2.3.0",
     "typescript": "4.4.4"
   }
 }

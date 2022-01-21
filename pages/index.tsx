@@ -9,7 +9,7 @@ import cx from "classnames";
 let resultTimeout: NodeJS.Timeout;
 
 type Props = {
-  membershipIds: string[];
+  membershipIds: number[];
 };
 
 const Home: NextPage<Props> = ({ membershipIds }) => {
@@ -18,7 +18,8 @@ const Home: NextPage<Props> = ({ membershipIds }) => {
   const [isResultVisible, setIsResultVisible] = useState(false);
 
   const handleValidationClick = useCallback(() => {
-    const isValidMembershipId = membershipIds.includes(membershipId);
+    const normalizedMembershipId = parseInt(membershipId, 10);
+    const isValidMembershipId = membershipIds.includes(normalizedMembershipId);
     setIsValidMembership(isValidMembershipId);
     setIsResultVisible(true);
   }, [membershipIds, membershipId, setIsValidMembership]);

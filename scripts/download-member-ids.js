@@ -1,0 +1,1 @@
+// curl -k "sftp://host:port/remote/membership_ids.json" --user "user:password" -o "./public/membership_ids.json"

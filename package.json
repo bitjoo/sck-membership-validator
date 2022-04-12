@@ -8,7 +8,8 @@
     "lint": "next lint",
     "ftp-deploy": "node ./scripts/deploy.js",
     "convert": "node ./scripts/convert-member-ids.js",
-    "deploy": "yarn convert && next build && next export && yarn ftp-deploy"
+    "prettier": "prettier --write --print-width=1 public/membership_ids.json",
+    "deploy": "yarn prettier && next build && next export && yarn ftp-deploy"
   },
   "dependencies": {
     "next": "12.0.3",
@@ -23,6 +24,7 @@
     "eslint": "7",
     "eslint-config-next": "12.0.3",
     "ftp-deploy": "^2.4.1",
+    "prettier": "^2.6.2",
     "simple-excel-to-json": "^2.3.0",
     "typescript": "4.4.4"
   }

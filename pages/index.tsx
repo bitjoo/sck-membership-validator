@@ -12,8 +12,10 @@ type Props = {
   membershipIds: number[];
 };
 
-const Home: NextPage<Props> = ({ membershipIds }) => {
+const Home: NextPage<Props> = ({ membershipIds: memIds }) => {
+  const [membershipIds, setMembershipIds] = useState(memIds);
   const [membershipId, setMembershipId] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const [isValidMembership, setIsValidMembership] = useState<boolean>();
   const [isResultVisible, setIsResultVisible] = useState(false);
 
@@ -27,6 +29,21 @@ const Home: NextPage<Props> = ({ membershipIds }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMembershipId(event.target.value);
   };
+
+  useEffect(() => {
+    setLoading(true);
+
+    fetch('/membership_ids.json', { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        setMembershipIds(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false)
+        alert(`MembershipIds couldn't be updated. ${err}`)
+      })
+  }, []);
 
   useEffect(() => {
     if (isResultVisible) {
@@ -55,7 +72,7 @@ const Home: NextPage<Props> = ({ membershipIds }) => {
 
         <h1 className={styles.title}>Membership Validator</h1>
 
-        <div className={styles.form}>
+        {!isLoading && <div className={styles.form}>
           <input
             type="number"
             className={styles.input}
@@ -66,7 +83,9 @@ const Home: NextPage<Props> = ({ membershipIds }) => {
           <button className={styles.button} onClick={handleValidationClick}>
             Prüfen
           </button>
-        </div>
+        </div>}
+
+        {isLoading && <div className={styles.form}>Loading...</div>}
 
         <div
           className={cx(styles.checkResult, {
@@ -97,7 +116,7 @@ const Home: NextPage<Props> = ({ membershipIds }) => {
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
   const postsDirectory = path.join(
     process.cwd(),
-    "data",
+    "public",
     "membership_ids.json"
   );
   const fileContent = fs.readFileSync(postsDirectory, "utf-8");

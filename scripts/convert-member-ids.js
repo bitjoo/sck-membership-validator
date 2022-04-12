@@ -24,6 +24,6 @@ const doc = parser.parseXls2Json(inputFile);
 
 const memberIds = doc[0].map(row => row[columnName])
 
-fs.writeFileSync("./data/membership_ids.json", JSON.stringify(memberIds));
+fs.writeFileSync("./public/membership_ids.json", JSON.stringify(memberIds));
 
 console.log("Converting successful!")
